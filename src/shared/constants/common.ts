@@ -1,1 +1,1 @@
-export const SERVICE_NAME = 'service-name';
+export const APP_NAME = "dragmove";

@@ -12,6 +12,18 @@
  * console.log(isDefined(0)); // true
  */
 export function isDefined(val: unknown): boolean {
-  if (val == null || typeof val === 'undefined') return false;
+  if (val == null || typeof val === "undefined") return false;
   return true;
 }
+
+export function curryr2(fn: (a: any, b: any) => any) {
+  return (b: any) => (a: any) => fn.apply(null, [a, b]);
+}
+
+export const eq = curryr2((a: any, b: any) => a === b);
+
+export const not = function not(fn) {
+  return function () {
+    return !fn.apply(null, arguments);
+  };
+};
