@@ -10,7 +10,7 @@ import { CareerList } from "./templates/career/CareerList";
 
 function useCareer() {
   const { data, error } = useSWR(
-    "https://dragmove.github.io/dragmove.com/data/careers.json",
+    "https://dragmove.github.io/nop/data/careers.json",
     fetcher
   );
 
@@ -18,7 +18,7 @@ function useCareer() {
     careers: data,
     isLoading: !error && !data,
     isError: !!error,
-    error,
+    error: "Failed to load career data",
   };
 }
 
@@ -29,8 +29,16 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
     careers,
     isLoading: isCareersLoading,
     isError: isCareersError,
-    error: careersError,
+    error: careersErrorMessage,
   } = useCareer();
+
+  const careersContents = isCareersError ? (
+    <Notification>
+      <Desc>{careersErrorMessage}</Desc>
+    </Notification>
+  ) : (
+    <CareerList data={careers} />
+  );
 
   // const _ = this,
   //   { careers, awards, profile } = _.props,
@@ -40,14 +48,6 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
   //   isAwardsLoading = awards.isLoading,
   //   isLoadProfileComplete = not(aid.object.isEmpty)(profile);
 
-  // const careersContents = truthy(hasCareersError) ? (
-  //   <Notification>
-  //     <Desc>{careers.error.msg}</Desc>
-  //   </Notification>
-  // ) : (
-  //   <CareerList careers={careers.data} />
-  // );
-
   // const awardsContents = truthy(hasAwardsError) ? (
   //   <Notification>
   //     <Desc>{awards.error.msg}</Desc>
@@ -55,16 +55,6 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
   // ) : (
   //   <AwardList awards={awards.data} />
   // );
-
-  // FIXME: ing
-  const careersContents = isCareersError ? (
-    <Notification>
-      <div>Error!!!</div>
-      {/* <Desc>{careersError}</Desc> */}
-    </Notification>
-  ) : (
-    <CareerList data={careers} />
-  );
 
   /*
   const renderContents = ({ data, isLoading, isError, error }) => {

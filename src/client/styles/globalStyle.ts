@@ -29,6 +29,32 @@ const GlobalStyle = createGlobalStyle`
         line-height: 1;
         background-color: #1c1c1c;
     }
+
+    ol, ul {
+        list-style: none;
+    }
+
+    input::selection { background: #1db954; color: #fff; }
+    input::-moz-selection { background:#1db954; color:#fff; }
+    input::-webkit-selection { background:#1db954; color:#fff; }
+
+    ::selection { background:#fbdfb7; color:#fff; }
+    ::-moz-selection { background:#fbdfb7; color:#fff; }
+    ::-webkit-selection { background:#fbdfb7; color:#fff; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #1c1c1c; }
+    ::-webkit-scrollbar-thumb { background: #555; }
+    ::-webkit-scrollbar-thumb:hover { background: #fff; }
+
+    #__next {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
 `;
 
 export default GlobalStyle;

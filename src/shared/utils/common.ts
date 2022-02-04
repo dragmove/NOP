@@ -33,6 +33,9 @@ export const not = function not(fn) {
   };
 };
 
+export const redeem = (nullable, replacement) =>
+  isDefined(nullable) ? nullable : replacement;
+
 /**
  * check object is truthy
  *
@@ -111,7 +114,7 @@ export const numberStrHasMinDigit = (number, minDigit) => {
 
 export const removeAnime = (animeObj, targets) => {
   animeObj?.pause();
-  anime.remove(targets);
+  if (targets) anime.remove(targets);
 };
 
 export const isInteger = function (int: number): boolean {
