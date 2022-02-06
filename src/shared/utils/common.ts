@@ -68,7 +68,7 @@ export function each(
 
 export function map(
   list: any[],
-  mapperFn: (item: any, index: number) => void
+  mapperFn: (item: any, index: number) => any
 ): any[] {
   const result: any[] = [];
   each(list, (item, index) => {

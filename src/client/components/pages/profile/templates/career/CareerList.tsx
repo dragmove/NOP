@@ -1,9 +1,8 @@
 import { each, map, removeAnime } from "@shared/utils/common";
-import React, { useRef, useState } from "react";
-import { useEffect } from "react";
+import anime from "animejs";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { CareerItem } from "./CareerItem";
-import anime from "animejs";
 
 interface Props {
   data: any[];

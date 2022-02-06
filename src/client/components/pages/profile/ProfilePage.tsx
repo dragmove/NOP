@@ -1,9 +1,9 @@
-import { Rect } from "@client/components/atoms/shape/Rect";
+import AnimatedRectLoading from "@client/components/atoms/animatedRectLoading/AnimatedRectLoading";
 import { BREAK_POINTS } from "@client/constants/config";
 import { fetcher } from "@client/utils/http";
-import { isDefined, truthy } from "@shared/utils/common";
+import { truthy } from "@shared/utils/common";
 import { NextPage } from "next";
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
 import { CareerList } from "./templates/career/CareerList";
@@ -82,12 +82,13 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
           {truthy(isAwardsLoading) ? LoadingWrapHasLoading : ""}
           {awardsContents}
         </article>
-  
+
         <article>
           <ArticleTitle>CONTACT.</ArticleTitle>
           {falsy(isLoadProfileComplete) ? LoadingWrapHasLoading : ""}
           <Contact profile={profile} />
-        </article> */}
+        </article> 
+      */}
     </Section>
   );
 };
@@ -150,10 +151,8 @@ const Desc = styled.p`
   opacity: 0.75;
 `;
 
-// FIXME:
 const LoadingWrapHasLoading = (
   <LoadingWrap>
-    {/* <AnimatedRectLoading /> */}
-    <Rect />
+    <AnimatedRectLoading />
   </LoadingWrap>
 );

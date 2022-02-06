@@ -57,7 +57,7 @@ export const CareerItem = (props: Props): ReactElement => {
   useEffect(() => {
     startAnimation({
       y: getRandomInt(-25, 25),
-      rotateZ: getRandomInt(-2, 2),
+      rotateZ: getRandomInt(-1, 1),
       marginLeft: eq(index)(1) ? 0 : -6,
       duration: 750,
       delay: 150,

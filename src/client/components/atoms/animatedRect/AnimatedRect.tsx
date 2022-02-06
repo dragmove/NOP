@@ -19,6 +19,7 @@ interface Props extends RectProps {
   easing?: string;
 }
 
+// FIXME: Refactoring
 export const AnimatedRect = (props: Props): ReactElement => {
   const {
     // rect props
@@ -69,12 +70,29 @@ export const AnimatedRect = (props: Props): ReactElement => {
   const animeStateRef = useRef({ ...state });
 
   useEffect(() => {
-    startAnimation();
+    startAnimation(props);
 
     return () => removeAnime(animeRef.current, animeStateRef.current);
-  }, []);
+  }, [props]);
 
-  function startAnimation(): void {
+  function startAnimation(props: Partial<Props>): void {
+    const {
+      width,
+      height,
+      x,
+      y,
+      rotateX,
+      rotateY,
+      rotateZ,
+      skewX,
+      skewY,
+      opacity,
+      // anime props
+      duration = 1000,
+      delay = 0,
+      easing = "easeOutExpo",
+    } = props;
+
     removeAnime(animeRef.current, animeStateRef.current);
 
     animeRef.current = anime({
@@ -89,9 +107,9 @@ export const AnimatedRect = (props: Props): ReactElement => {
       skewX: redeem(skewX, state.skewX),
       skewY: redeem(skewY, state.skewY),
       opacity: redeem(opacity, state.opacity),
-      duration: duration,
-      delay: delay,
-      easing: easing,
+      duration,
+      delay,
+      easing,
       update: () => updateAnimation(animeStateRef.current),
       begin: null,
       complete: () => updateAnimation(animeStateRef.current),
@@ -100,6 +118,8 @@ export const AnimatedRect = (props: Props): ReactElement => {
   }
 
   function updateAnimation(obj: Partial<Props>): void {
+    if (!obj) return;
+
     setState({
       width: obj.width,
       height: obj.height,

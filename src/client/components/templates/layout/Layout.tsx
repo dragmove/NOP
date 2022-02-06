@@ -1,14 +1,28 @@
 import { Copyright } from "@client/components/atoms/copyright/Copyright";
 import { Dot } from "@client/components/atoms/shape/Dot";
 import Logo from "@client/components/molcules/logo/Logo";
+import Navi from "@client/components/molcules/navigation/Navi";
 import { useWindowSize, WindowSize } from "@client/utils/hooks/useWindowSize";
 import { APP_NAME } from "@shared/constants/common";
 import Head from "next/head";
-import { ReactElement } from "react";
+import { ReactElement, SyntheticEvent, useState } from "react";
 import styled from "styled-components";
 
 const Layout = ({ children }): ReactElement => {
   const windowSize: WindowSize = useWindowSize();
+
+  // FIXME: Manage navi state
+  const [navi, setNavi] = useState({
+    d1Index: 0,
+    d2Index: 0,
+  });
+
+  const handleNaviClick = (evt: SyntheticEvent, d1Index: number) => {
+    setNavi({
+      ...navi,
+      d1Index,
+    });
+  };
 
   return (
     <>
@@ -72,6 +86,12 @@ const Layout = ({ children }): ReactElement => {
         </header>
 
         {children}
+
+        <Navi
+          onClick={handleNaviClick}
+          d1Index={navi.d1Index}
+          d2Index={navi.d2Index}
+        />
 
         <Footer>
           <Copyright />
