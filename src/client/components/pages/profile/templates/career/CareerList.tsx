@@ -1,14 +1,14 @@
 import { each, map, removeAnime } from "@shared/utils/common";
 import anime from "animejs";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { CareerItem } from "./CareerItem";
+import CareerItem from "./CareerItem";
 
 interface Props {
   data: any[];
 }
 
-export const CareerList = (props: Props) => {
+const CareerList = (props: Props): ReactElement => {
   const { data = [] } = props;
 
   const [state, setState] = useState({
@@ -78,6 +78,8 @@ export const CareerList = (props: Props) => {
 
   return renderContents();
 };
+
+export default CareerList;
 
 const getCompanyName = (str: string): string => (str || "").split(" ")[0] || "";
 

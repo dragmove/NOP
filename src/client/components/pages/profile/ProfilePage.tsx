@@ -6,9 +6,10 @@ import { NextPage } from "next";
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
-import { CareerList } from "./templates/career/CareerList";
+import CareerList from "./templates/career/CareerList";
 
-function useCareer() {
+// FIXME: Define type
+function useCareers() {
   const { data, error } = useSWR(
     "https://dragmove.github.io/nop/data/careers.json",
     fetcher
@@ -18,7 +19,7 @@ function useCareer() {
     careers: data,
     isLoading: !error && !data,
     isError: !!error,
-    error: "Failed to load career data",
+    error: "Failed to load datas",
   };
 }
 
@@ -30,7 +31,7 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
     isLoading: isCareersLoading,
     isError: isCareersError,
     error: careersErrorMessage,
-  } = useCareer();
+  } = useCareers();
 
   const careersContents = isCareersError ? (
     <Notification>
@@ -72,20 +73,20 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
 
       <article>
         <ArticleTitle className="first">CAREER.</ArticleTitle>
-        {truthy(isCareersLoading) ? LoadingWrapHasLoading : ""}
+        {truthy(isCareersLoading) ? AnimatedRectLoadingWrap : ""}
         {careersContents}
       </article>
 
       {/* 
         <article>
           <ArticleTitle>AWARD.</ArticleTitle>
-          {truthy(isAwardsLoading) ? LoadingWrapHasLoading : ""}
+          {truthy(isAwardsLoading) ? AnimatedRectLoadingWrap : ""}
           {awardsContents}
         </article>
 
         <article>
           <ArticleTitle>CONTACT.</ArticleTitle>
-          {falsy(isLoadProfileComplete) ? LoadingWrapHasLoading : ""}
+          {falsy(isLoadProfileComplete) ? AnimatedRectLoadingWrap : ""}
           <Contact profile={profile} />
         </article> 
       */}
@@ -151,7 +152,7 @@ const Desc = styled.p`
   opacity: 0.75;
 `;
 
-const LoadingWrapHasLoading = (
+const AnimatedRectLoadingWrap = (
   <LoadingWrap>
     <AnimatedRectLoading />
   </LoadingWrap>

@@ -1,6 +1,8 @@
 // Ref: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 import anime from "animejs";
 
+const slice = Array.prototype.slice;
+
 /**
  * Check if a value is defined
  *
@@ -74,6 +76,29 @@ export function map(
   each(list, (item, index) => {
     result.push(mapperFn(item, index));
   });
+  return result;
+}
+
+export function rest(list: any[], num = 1): any[] {
+  return slice.call(list, num);
+}
+
+export function reduce(
+  list: any[],
+  iterateeFn: (memo: any, item: any) => any,
+  memo?: any
+): any {
+  let result = memo;
+
+  if (arguments.length === 2) {
+    result = list[0];
+    list = rest(list);
+  }
+
+  each(list, (item: any): void => {
+    result = iterateeFn(result, item);
+  });
+
   return result;
 }
 

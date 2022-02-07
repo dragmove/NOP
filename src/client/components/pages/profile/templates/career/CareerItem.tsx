@@ -24,7 +24,7 @@ interface Props {
   dateEnd: string;
 }
 
-export const CareerItem = (props: Props): ReactElement => {
+const CareerItem = (props: Props): ReactElement => {
   const {
     index,
     zIndex,
@@ -41,10 +41,26 @@ export const CareerItem = (props: Props): ReactElement => {
     rotateZ: 0,
     marginLeft: -175,
     animeRectFrames: [
-      { width: 144, duration: 750, delay: 350 },
-      { width: 144, duration: 750, delay: 350 },
-      { width: 144, duration: 750, delay: 350 },
-      { width: 77, duration: 850, delay: 350 },
+      {
+        width: 144,
+        duration: getRandomInt(350, 950),
+        delay: getRandomInt(50, 550),
+      },
+      {
+        width: 144,
+        duration: getRandomInt(350, 950),
+        delay: getRandomInt(50, 550),
+      },
+      {
+        width: 144,
+        duration: getRandomInt(350, 950),
+        delay: getRandomInt(50, 550),
+      },
+      {
+        width: 77,
+        duration: getRandomInt(350, 850),
+        delay: getRandomInt(50, 550),
+      },
     ],
   });
   const animeRef = useRef(null);
@@ -60,7 +76,7 @@ export const CareerItem = (props: Props): ReactElement => {
       rotateZ: getRandomInt(-1, 1),
       marginLeft: eq(index)(1) ? 0 : -6,
       duration: 750,
-      delay: 150,
+      delay: getRandomInt(150, 350),
       easing: "easeOutExpo",
     });
 
@@ -178,6 +194,8 @@ export const CareerItem = (props: Props): ReactElement => {
 
   return renderContents();
 };
+
+export default CareerItem;
 
 // -175 --> -15
 const Wrap = styled.li.attrs((props: any) => ({
