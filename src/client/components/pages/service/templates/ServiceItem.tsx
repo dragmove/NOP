@@ -66,7 +66,6 @@ const ServiceItem = (props: Props): ReactElement => {
         imgHeight={thumb.height}
         x={x}
         y={y}
-        z={0}
       />
     );
   });
