@@ -96,6 +96,16 @@ const Layout = ({ children }): ReactElement => {
         <Footer>
           <Copyright />
         </Footer>
+
+        <Loading
+          top={loading.y}
+          left={loading.x}
+          width="20px"
+          height="20px"
+          scale={loading.scale}
+          progress={loading.progress}
+          isVisible={loading.isVisible}
+        />
       </Wrap>
     </>
   );
