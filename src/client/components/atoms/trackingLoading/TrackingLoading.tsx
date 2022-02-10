@@ -8,39 +8,34 @@ import React, {
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import anime from "animejs";
-import { removeAnime, truthy } from "@shared/utils/common";
+import { partial, remap, removeAnime, truthy } from "@shared/utils/common";
+import { BREAK_POINTS } from "@client/constants/config";
 
-/*
 const remapProgress = (progress) => {
-  if (gt(progress)(0)) {
+  if (progress < 0) {
     progress = 0;
-  } else if (lt(progress)(1)) {
+  } else if (progress > 1) {
     progress = 1;
   }
-
-  return aid.math.remap(progress, 0, 1, 0, 360);
+  return remap(progress, 0, 1, 0, 360);
 };
 
 const circleGradientStyle = (bgColor, fillColor, degree) => {
   let angle = 0;
-
-  if (gte(degree)(180)) {
+  if (degree <= 180) {
     angle = degree + 90;
-
     return `linear-gradient(${angle}deg, transparent 50%, ${bgColor} 50%), linear-gradient(90deg, ${bgColor} 50%, transparent 50%)`;
   } else {
     angle = degree - 90;
-
     return `linear-gradient(${angle}deg, transparent 50%, ${fillColor} 50%), linear-gradient(90deg, ${bgColor} 50%, transparent 50%)`;
   }
 };
 
-const circleGradientStylePartial = aid.partial(
+const circleGradientStylePartial = partial(
   circleGradientStyle,
   "#ffffff",
   "#c23420"
 );
-*/
 
 interface Props {
   top?: number;
@@ -140,7 +135,7 @@ const Circle = styled.div`
   box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
   pointer-events: none;
 
-  @media only screen and (min-width: ${rwdWidths.pc}px) {
+  @media only screen and (min-width: ${BREAK_POINTS.DESKTOP}px) {
     display: block;
   }
 `;

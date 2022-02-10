@@ -159,3 +159,23 @@ export const getRandomInt = function (
 
   return minInt + Math.floor(Math.random() * (maxInt - minInt + 1));
 };
+
+export const remap = (
+  target: number,
+  min: number,
+  max: number,
+  remapedMin: number,
+  remapedMax: number
+): number => {
+  return (
+    ((target - min) / (max - min)) * (remapedMax - remapedMin) + remapedMin
+  );
+};
+
+export const partial = function (func /*, args... */) {
+  var args = rest(slice.call(arguments));
+
+  return function (/* args... */) {
+    return func.apply(func, args.concat(slice.call(arguments)));
+  };
+};

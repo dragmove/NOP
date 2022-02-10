@@ -5,6 +5,7 @@ export interface WindowSize {
   height: number;
 }
 
+// FIXME: develop
 export function useWindowSize() {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: undefined,
@@ -19,6 +20,8 @@ export function useWindowSize() {
       });
     }
 
+    // FIXME: Change resize with rxjs
+    // Apply distinctUntilChanged
     window?.addEventListener("resize", handleResize);
     handleResize();
 
