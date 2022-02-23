@@ -8,11 +8,19 @@ interface Props {
   title: string;
   url: string;
   isActive: boolean;
+  isDisabled: boolean;
   onClick: (evt: SyntheticEvent, index: number) => void;
 }
 
 const NaviItem = (props: Props): ReactElement => {
-  const { index, title = "", url = "", isActive = false, onClick } = props;
+  const {
+    index,
+    title = "",
+    url = "",
+    isActive = false,
+    isDisabled = false,
+    onClick,
+  } = props;
 
   const handleLinkBtnClick = (evt: SyntheticEvent, index: number): void => {
     onClick?.(evt, index);
@@ -24,14 +32,15 @@ const NaviItem = (props: Props): ReactElement => {
 
     return (
       <Item className={eq(index)(1) ? "first" : ""}>
-        <Link href={href} as={url} passHref>
+        <ConditionLink href={href} as={url} isDisabled={isDisabled}>
           <LinkBtn
             className={className}
+            isDisabled={isDisabled}
             onClick={(evt: SyntheticEvent) => handleLinkBtnClick(evt, index)}
           >
             {title}
           </LinkBtn>
-        </Link>
+        </ConditionLink>
       </Item>
     );
   };
@@ -45,6 +54,18 @@ const getLinkBtnClassName = (isActive: boolean): string => {
   return eq(isActive)(true) ? "on" : "";
 };
 
+const ConditionLink = (props): ReactElement => {
+  const { href, url, isDisabled, children } = props;
+
+  return isDisabled ? (
+    <>{children}</>
+  ) : (
+    <Link href={href} as={url} passHref>
+      {children}
+    </Link>
+  );
+};
+
 const Item = styled.li`
   margin-top: 8px;
 
@@ -53,10 +74,16 @@ const Item = styled.li`
   }
 `;
 
-const LinkBtn = styled.a`
+const LinkBtn = styled.a<Partial<Props>>`
   color: #fff;
   text-decoration: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.75);
+
+  ${(props) =>
+    props.isDisabled &&
+    `
+    cursor: default;
+  `}
 
   &:hover {
     color: #c23420;

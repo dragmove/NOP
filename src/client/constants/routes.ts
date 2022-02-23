@@ -1,4 +1,4 @@
-interface Route {
+export interface Route {
   id: number;
   title: string;
   url: string;

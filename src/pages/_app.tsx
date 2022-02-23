@@ -4,6 +4,8 @@ import GlobalStyle from "@client/styles/globalStyle";
 import type { AppProps } from "next/app";
 import { NextPage } from "next/types";
 import { ReactElement, ReactNode } from "react";
+import { store } from "@shared/store/store";
+import { Provider } from "react-redux";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -23,7 +25,9 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       </>
     ));
 
-  return getLayout(<Component {...pageProps} />);
+  return (
+    <Provider store={store}>{getLayout(<Component {...pageProps} />)}</Provider>
+  );
 };
 
 export default App;

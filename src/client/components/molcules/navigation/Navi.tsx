@@ -28,6 +28,7 @@ const Navi = (props: Props): ReactElement => {
           title={route.title}
           url={route.url}
           isActive={isActive}
+          isDisabled={isActive}
           onClick={handleNaviItemClick}
         />
       );
