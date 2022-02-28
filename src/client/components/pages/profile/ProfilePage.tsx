@@ -1,61 +1,47 @@
 import AnimatedRectLoading from "@client/components/atoms/animatedRectLoading/AnimatedRectLoading";
 import { BREAK_POINTS } from "@client/constants/config";
-import { fetcher } from "@client/utils/http";
+import { useAwards, useCareers } from "@client/utils/hooks/data";
 import { truthy } from "@shared/utils/common";
 import { NextPage } from "next";
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import useSWR from "swr";
+import AwardList from "./templates/award/AwardList";
 import CareerList from "./templates/career/CareerList";
-
-// FIXME: Define type
-function useCareers() {
-  const { data, error } = useSWR(
-    "https://dragmove.github.io/nop/data/careers.json",
-    fetcher
-  );
-
-  return {
-    careers: data,
-    isLoading: !error && !data,
-    isError: !!error,
-    error: "Failed to load datas",
-  };
-}
 
 interface Props {}
 
 const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
   const {
-    careers,
+    data: careers,
     isLoading: isCareersLoading,
-    isError: isCareersError,
-    error: careersErrorMessage,
+    error: careersError,
   } = useCareers();
 
-  const careersContents = isCareersError ? (
+  const {
+    data: awards,
+    isLoading: isAwardsLoading,
+    error: awardsError,
+  } = useAwards();
+
+  const careersContents = careersError ? (
     <Notification>
-      <Desc>{careersErrorMessage}</Desc>
+      <Desc>{"Failed to load career data."}</Desc>
     </Notification>
   ) : (
     <CareerList data={careers} />
   );
 
+  const awardsContents = awardsError ? (
+    <Notification>
+      <Desc>{"Failed to load award data."}</Desc>
+    </Notification>
+  ) : (
+    <AwardList data={awards} />
+  );
+
   // const _ = this,
   //   { careers, awards, profile } = _.props,
-  //   hasCareersError = isDefined(careers.error),
-  //   isCareersLoading = careers.isLoading,
-  //   hasAwardsError = isDefined(awards.error),
-  //   isAwardsLoading = awards.isLoading,
   //   isLoadProfileComplete = not(aid.object.isEmpty)(profile);
-
-  // const awardsContents = truthy(hasAwardsError) ? (
-  //   <Notification>
-  //     <Desc>{awards.error.msg}</Desc>
-  //   </Notification>
-  // ) : (
-  //   <AwardList awards={awards.data} />
-  // );
 
   /*
   const renderContents = ({ data, isLoading, isError, error }) => {
@@ -73,17 +59,17 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
 
       <article>
         <ArticleTitle className="first">CAREER.</ArticleTitle>
-        {truthy(isCareersLoading) ? AnimatedRectLoadingWrap : ""}
+        {truthy(isCareersLoading) && AnimatedRectLoadingWrap}
         {careersContents}
       </article>
 
-      {/* 
-        <article>
-          <ArticleTitle>AWARD.</ArticleTitle>
-          {truthy(isAwardsLoading) ? AnimatedRectLoadingWrap : ""}
-          {awardsContents}
-        </article>
+      <article>
+        <ArticleTitle>AWARD.</ArticleTitle>
+        {truthy(isAwardsLoading) && AnimatedRectLoadingWrap}
+        {awardsContents}
+      </article>
 
+      {/* 
         <article>
           <ArticleTitle>CONTACT.</ArticleTitle>
           {falsy(isLoadProfileComplete) ? AnimatedRectLoadingWrap : ""}

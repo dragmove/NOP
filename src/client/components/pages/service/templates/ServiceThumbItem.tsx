@@ -1,6 +1,6 @@
 import { AnimatedMaskWrap } from "@client/components/atoms/animatedMaskWrap/AnimatedMaskWrap";
-import { getRandomInt } from "@shared/utils/common";
-import React, { ReactElement, useEffect, useRef } from "react";
+import { getRandomInt, truthy } from "@shared/utils/common";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 interface Props {
@@ -16,10 +16,13 @@ const ServiceThumbItem = (props: Props): ReactElement => {
   const { alt, imgUrl, imgWidth, imgHeight, x, y, z } = props;
   const maskWrapRef = useRef(null);
 
+  const [state, setState] = useState({
+    isLoadComplete: false,
+  });
+
   useEffect(() => {
-    // FIXME: After fetching image, run
-    maskWrapRef.current?.start();
-  }, []);
+    if (truthy(state.isLoadComplete)) maskWrapRef.current?.start();
+  }, [state.isLoadComplete]);
 
   return (
     <Wrap x={x} y={y} imgWidth={imgWidth} imgHeight={imgHeight}>
@@ -33,7 +36,17 @@ const ServiceThumbItem = (props: Props): ReactElement => {
         duration={750}
         delay={getRandomInt(150, 550)}
       >
-        <img src={imgUrl} alt={alt} width={imgWidth} />
+        <img
+          src={imgUrl}
+          alt={alt}
+          width={imgWidth}
+          loading="lazy"
+          onLoad={() => {
+            setState({
+              isLoadComplete: true,
+            });
+          }}
+        />
       </AnimatedMaskWrap>
     </Wrap>
   );

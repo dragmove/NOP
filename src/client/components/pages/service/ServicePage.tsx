@@ -1,41 +1,24 @@
 import AnimatedRectLoading from "@client/components/atoms/animatedRectLoading/AnimatedRectLoading";
 import { BREAK_POINTS } from "@client/constants/config";
-import { fetcher } from "@client/utils/http";
+import { useServices } from "@client/utils/hooks/data";
 import { truthy } from "@shared/utils/common";
 import { NextPage } from "next";
 import { ReactElement } from "react";
 import styled from "styled-components";
-import useSWR from "swr";
 import ServiceList from "./templates/ServiceList";
-
-// FIXME: Define type
-function useServices() {
-  const { data, error } = useSWR(
-    "https://dragmove.github.io/nop/data/services.json",
-    fetcher
-  );
-
-  return {
-    services: data,
-    isLoading: !error && !data,
-    isError: !!error,
-    error: "Failed to load datas",
-  };
-}
 
 interface Props {}
 
 const ServicePage: NextPage<Props> = (props: Props): ReactElement => {
   const {
-    services,
+    data: services,
     isLoading: isServicesLoading,
-    isError: isServicesError,
-    error: servicesErrorMessage,
+    error: servicesError,
   } = useServices();
 
-  const servicesContents = isServicesError ? (
+  const servicesContents = servicesError ? (
     <Notification>
-      <Desc>{servicesErrorMessage}</Desc>
+      <Desc>{"Failed to load service data."}</Desc>
     </Notification>
   ) : (
     <ServiceList data={services} />
@@ -47,7 +30,7 @@ const ServicePage: NextPage<Props> = (props: Props): ReactElement => {
 
       <article>
         <ArticleTitle className="first">SERVICE.</ArticleTitle>
-        {truthy(isServicesLoading) ? AnimatedRectLoadingWrap : ""}
+        {truthy(isServicesLoading) && AnimatedRectLoadingWrap}
         {servicesContents}
       </article>
     </Section>

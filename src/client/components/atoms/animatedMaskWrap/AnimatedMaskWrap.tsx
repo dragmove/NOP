@@ -57,10 +57,6 @@ export const AnimatedMaskWrap = forwardRef(
     const animeRef = useRef(null);
     const animeStateRef = useRef({ ...state });
 
-    useEffect(() => {
-      return () => removeAnime(animeRef.current, animeStateRef.current);
-    }, [props]);
-
     function startAnimation(props: Partial<Props>): void {
       const {
         width,
@@ -112,7 +108,6 @@ const defaultProps: Partial<Props> = {
 
 const MaskWrap = (props: Partial<Props>): ReactElement => {
   const _props = { ...defaultProps, ...props };
-
   return <Wrap className="mask-wrap" {..._props} />;
 };
 

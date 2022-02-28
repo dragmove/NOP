@@ -6,6 +6,8 @@ import { NextPage } from "next/types";
 import { ReactElement, ReactNode } from "react";
 import { store } from "@shared/store/store";
 import { Provider } from "react-redux";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -14,6 +16,8 @@ type NextPageWithLayout = NextPage & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
+
+const queryClient = new QueryClient();
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout =
@@ -26,7 +30,12 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     ));
 
   return (
-    <Provider store={store}>{getLayout(<Component {...pageProps} />)}</Provider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        {getLayout(<Component {...pageProps} />)}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </Provider>
   );
 };
 

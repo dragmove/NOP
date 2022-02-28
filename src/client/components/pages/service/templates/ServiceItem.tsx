@@ -53,6 +53,7 @@ const ServiceItem = (props: Props): ReactElement => {
     let x = 0,
       y = 0;
     if (thumbnails.length > 1) {
+      // FIXME: React Query의 data fetch 시점마다 x, y 위치가 변경되어 이미지 위치가 튀는듯한 현상
       x = index * getRandomInt(-50, 50);
       y = index * getRandomInt(-25, 25);
     }
@@ -74,42 +75,36 @@ const ServiceItem = (props: Props): ReactElement => {
     return <ServiceRankItem key={index + 1} index={index + 1} rank={rank} />;
   });
 
-  const rel: string = isDefined(url) ? `rel="noopener"` : "";
+  const rel: string = isDefined(url) && `rel="noopener"`;
 
   return (
-    <Wrap className={eq(index)(1) ? "first" : ""}>
-      {appIcon ? (
+    <Wrap className={eq(index)(1) && "first"}>
+      {appIcon && (
         <AppIcon
           src={appIcon.url}
           width={appIcon.width}
           height={appIcon.height}
           alt={title}
         />
-      ) : (
-        ""
       )}
 
       <Title>{title}</Title>
 
-      {subtitle ? <Subtitle>{subtitle}</Subtitle> : ""}
+      {subtitle && <Subtitle>{subtitle}</Subtitle>}
 
-      {url ? (
+      {url && (
         <Link href={url} target="_blank" rel={rel}>
           Go
         </Link>
-      ) : (
-        ""
       )}
 
-      {description ? <Description>{description}</Description> : ""}
+      {description && <Description>{description}</Description>}
 
-      {thumbnails.length ? (
+      {thumbnails.length && (
         <ThumbList width={thumbListWidth}>{thumbItems}</ThumbList>
-      ) : (
-        ""
       )}
 
-      {rankItems.length ? <RankList>{rankItems}</RankList> : ""}
+      {rankItems.length && <RankList>{rankItems}</RankList>}
 
       {/* 
       <Year className="year">{year}</Year>
