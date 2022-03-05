@@ -1,12 +1,13 @@
 import AnimatedRectLoading from "@client/components/atoms/animatedRectLoading/AnimatedRectLoading";
 import { BREAK_POINTS } from "@client/constants/config";
-import { useAwards, useCareers } from "@client/utils/hooks/data";
+import { useAwards, useCareers, useProfile } from "@client/utils/hooks/data";
 import { truthy } from "@shared/utils/common";
 import { NextPage } from "next";
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 import AwardList from "./templates/award/AwardList";
 import CareerList from "./templates/career/CareerList";
+import Contact from "./templates/contact/Contact";
 
 interface Props {}
 
@@ -23,6 +24,13 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
     error: awardsError,
   } = useAwards();
 
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    error: profileError,
+  } = useProfile();
+
+  // TODO: 중복 코드 줄이기
   const careersContents = careersError ? (
     <Notification>
       <Desc>{"Failed to load career data."}</Desc>
@@ -39,19 +47,13 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
     <AwardList data={awards} />
   );
 
-  // const _ = this,
-  //   { careers, awards, profile } = _.props,
-  //   isLoadProfileComplete = not(aid.object.isEmpty)(profile);
-
-  /*
-  const renderContents = ({ data, isLoading, isError, error }) => {
-    if (isError) return <div>failed to load data</div>;
-    if (isLoading) return <div>loading...</div>;
-
-    return <div>oh</div>;
-    // return <div>hello {data}!</div>;
-  };
-  */
+  const profileContents = profileError ? (
+    <Notification>
+      <Desc>{"Failed to load profile data."}</Desc>
+    </Notification>
+  ) : (
+    <Contact data={profile} />
+  );
 
   return (
     <Section>
@@ -69,13 +71,11 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
         {awardsContents}
       </article>
 
-      {/* 
-        <article>
-          <ArticleTitle>CONTACT.</ArticleTitle>
-          {falsy(isLoadProfileComplete) ? AnimatedRectLoadingWrap : ""}
-          <Contact profile={profile} />
-        </article> 
-      */}
+      <article>
+        <ArticleTitle>CONTACT.</ArticleTitle>
+        {truthy(isProfileLoading) ? AnimatedRectLoadingWrap : ""}
+        {profileContents}
+      </article>
     </Section>
   );
 };

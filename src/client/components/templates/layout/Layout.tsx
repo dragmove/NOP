@@ -40,16 +40,14 @@ const Layout = ({ children }): ReactElement => {
 
   const handleNaviClick = (evt: SyntheticEvent, d1Index: number): void => {
     if (d1Index === navi.d1Index) return;
+    setScrollTop(0);
+
     dispatch(updateNavi({ d1Index }));
   };
 
   const handleGoTopBtnClick = (evt: SyntheticEvent): void => {
     evt.preventDefault();
-    appNodeRef.current?.scroll({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
+    setScrollTop(0, true);
   };
 
   useEffect(() => {
@@ -99,6 +97,16 @@ const Layout = ({ children }): ReactElement => {
       subscribeShowGoTopBtn$.unsubscribe();
     };
   }, []);
+
+  function setScrollTop(top: number, isSmooth: boolean = false): void {
+    appNodeRef.current?.scroll({
+      top,
+      left: 0,
+      ...(isSmooth && {
+        behavior: "smooth",
+      }),
+    });
+  }
 
   return (
     <>

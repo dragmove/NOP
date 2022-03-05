@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ServiceThumbItem = (props: Props): ReactElement => {
-  const { alt, imgUrl, imgWidth, imgHeight, x, y, z } = props;
+  const { alt, imgUrl, imgWidth, imgHeight, x, y } = props;
   const maskWrapRef = useRef(null);
 
   const [state, setState] = useState({

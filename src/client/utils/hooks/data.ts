@@ -3,32 +3,38 @@ import { useQuery } from "react-query";
 import { fetcher } from "../http";
 
 export function useCareers(): FetchDataResult {
-  const { isLoading, error, data, isFetching } = useQuery("careers", () =>
-    fetcher("https://dragmove.github.io/nop/data/careers.json")
-  );
-
-  return {
-    data,
-    isLoading,
-    error,
-  };
+  return fetchData({
+    queryKey: "careers",
+    url: "https://dragmove.github.io/nop/data/careers.json",
+  });
 }
 
 export function useAwards(): FetchDataResult {
-  const { isLoading, error, data, isFetching } = useQuery("awards", () =>
-    fetcher("https://dragmove.github.io/nop/data/awards.json")
-  );
+  return fetchData({
+    queryKey: "awards",
+    url: "https://dragmove.github.io/nop/data/awards.json",
+  });
+}
 
-  return {
-    data,
-    isLoading,
-    error,
-  };
+export function useProfile(): FetchDataResult {
+  return fetchData({
+    queryKey: "profile",
+    url: "https://dragmove.github.io/nop/data/profile.json",
+  });
 }
 
 export function useServices(): FetchDataResult {
-  const { isLoading, error, data, isFetching } = useQuery("services", () =>
-    fetcher("https://dragmove.github.io/nop/data/services.json")
+  return fetchData({
+    queryKey: "services",
+    url: "https://dragmove.github.io/nop/data/services.json",
+  });
+}
+
+function fetchData(options: { queryKey: string; url: string }) {
+  const { queryKey, url } = options;
+
+  const { isLoading, error, data, isFetching } = useQuery(queryKey, () =>
+    fetcher(url)
   );
 
   return {

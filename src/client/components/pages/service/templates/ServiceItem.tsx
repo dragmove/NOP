@@ -1,5 +1,5 @@
-import { eq, getRandomInt, isDefined, map, reduce } from "@shared/utils/common";
-import React, { ReactElement, useMemo } from "react";
+import { eq, getRandomInt, map, reduce } from "@shared/utils/common";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import ServiceRankItem from "./ServiceRankItem";
 import ServiceThumbItem from "./ServiceThumbItem";
@@ -14,6 +14,11 @@ interface AppIcon {
   url: string;
   width: number;
   height: number;
+}
+
+interface ThumbListPosition {
+  x: number;
+  y: number;
 }
 
 interface Props {
@@ -44,38 +49,49 @@ const ServiceItem = (props: Props): ReactElement => {
     ranks,
   } = props;
 
+  const [thumbItemPositions, setThumbItemPositions] = useState<
+    ThumbListPosition[]
+  >([]);
+
+  useEffect(() => {
+    setThumbItemPositions(
+      map(thumbnails, (thumb, index) => {
+        let x = 0,
+          y = 0;
+        if (thumbnails.length > 1) {
+          x = index * getRandomInt(-50, 50);
+          y = index * getRandomInt(-25, 25);
+        }
+        return { x, y };
+      })
+    );
+  }, []);
+
   const thumbListWidth: number = useMemo(
     () => getThumbListWidth(thumbnails),
     [thumbnails.length]
   );
 
-  const thumbItems: ReactElement[] = map(thumbnails, (thumb, index) => {
-    let x = 0,
-      y = 0;
-    if (thumbnails.length > 1) {
-      // FIXME: React Query의 data fetch 시점마다 x, y 위치가 변경되어 이미지 위치가 튀는듯한 현상
-      x = index * getRandomInt(-50, 50);
-      y = index * getRandomInt(-25, 25);
-    }
-
-    return (
-      <ServiceThumbItem
-        key={index + 1}
-        alt={title}
-        imgUrl={thumb.url}
-        imgWidth={thumb.width}
-        imgHeight={thumb.height}
-        x={x}
-        y={y}
-      />
-    );
-  });
-
   const rankItems: ReactElement[] = ranks.map((rank, index) => {
     return <ServiceRankItem key={index + 1} index={index + 1} rank={rank} />;
   });
 
-  const rel: string = isDefined(url) && `rel="noopener"`;
+  function generateThumbItems(): ReactElement[] {
+    return map(thumbnails, (thumb, index) => {
+      const position = thumbItemPositions[index];
+      return (
+        <ServiceThumbItem
+          key={`service-thumb-item-${index}`}
+          alt={title}
+          imgUrl={thumb.url}
+          imgWidth={thumb.width}
+          imgHeight={thumb.height}
+          x={position.x}
+          y={position.y}
+        />
+      );
+    });
+  }
 
   return (
     <Wrap className={eq(index)(1) && "first"}>
@@ -93,15 +109,15 @@ const ServiceItem = (props: Props): ReactElement => {
       {subtitle && <Subtitle>{subtitle}</Subtitle>}
 
       {url && (
-        <Link href={url} target="_blank" rel={rel}>
+        <Link href={url} target="_blank" rel="noopener noreferrer">
           Go
         </Link>
       )}
 
       {description && <Description>{description}</Description>}
 
-      {thumbnails.length && (
-        <ThumbList width={thumbListWidth}>{thumbItems}</ThumbList>
+      {thumbItemPositions.length && (
+        <ThumbList width={thumbListWidth}>{generateThumbItems()}</ThumbList>
       )}
 
       {rankItems.length && <RankList>{rankItems}</RankList>}
