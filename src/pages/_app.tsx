@@ -3,7 +3,7 @@ import Layout from "@client/components/templates/layout/Layout";
 import GlobalStyle from "@client/styles/globalStyle";
 import type { AppProps } from "next/app";
 import { NextPage } from "next/types";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, StrictMode } from "react";
 import { store } from "@shared/store/store";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -30,12 +30,15 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     ));
 
   return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        {getLayout(<Component {...pageProps} />)}
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </Provider>
+    <StrictMode>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          {getLayout(<Component {...pageProps} />)}
+
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </Provider>
+    </StrictMode>
   );
 };
 
