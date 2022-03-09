@@ -37,6 +37,6 @@
     "moduleResolution": "node",
     "jsx": "preserve"
   },
-  "include": ["./src/client/**/*", "./src/pages/**/*"],
+  "include": ["next-env.d.ts", "./src/client/**/*", "./src/pages/**/*"],
   "exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts"]
 }
