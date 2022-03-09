@@ -72,9 +72,11 @@ const ServiceItem = (props: Props): ReactElement => {
     [thumbnails.length]
   );
 
-  const rankItems: ReactElement[] = ranks.map((rank, index) => {
-    return <ServiceRankItem key={index + 1} index={index + 1} rank={rank} />;
-  });
+  const rankItems: ReactElement[] =
+    ranks.length &&
+    ranks.map((rank, index) => {
+      return <ServiceRankItem key={index + 1} index={index + 1} rank={rank} />;
+    });
 
   function generateThumbItems(): ReactElement[] {
     return map(thumbnails, (thumb, index) => {
