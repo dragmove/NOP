@@ -15,7 +15,10 @@ import { ViewModule } from "./view/view.module";
       Next({
         dev: process.env.NODE_ENV !== "production",
         // conf: { useFilesystemPublicRoutes: false },
-      })
+      }),
+      {
+        viewsDir: null,
+      }
     ),
     ApiModule,
     ViewModule,

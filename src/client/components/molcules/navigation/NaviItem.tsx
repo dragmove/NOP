@@ -28,7 +28,7 @@ const NaviItem = (props: Props): ReactElement => {
 
   const renderContents = (): ReactElement => {
     const className = `${getLinkBtnClassName(isActive)}`;
-    const href: string = `/views${url}`;
+    const href: string = `${url}`;
 
     return (
       <Item className={eq(index)(1) ? "first" : ""}>

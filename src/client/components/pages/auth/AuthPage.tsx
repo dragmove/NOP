@@ -1,6 +1,11 @@
 import { BREAK_POINTS } from "@client/constants/config";
 import { NextPage } from "next";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, {
+  ReactElement,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
 import styled from "styled-components";
 
 interface Props {}
@@ -13,6 +18,18 @@ const AuthPage: NextPage<Props> = (props: Props): ReactElement => {
   useEffect(() => {
     //
   }, []);
+
+  const handleEmailChange = (evt: SyntheticEvent) => {
+    //
+  };
+
+  const handlePasswordChange = (evt: SyntheticEvent) => {
+    //
+  };
+
+  const handleSubmitClick = (evt: SyntheticEvent) => {
+    //
+  };
 
   return (
     <Section>
@@ -48,7 +65,7 @@ const AuthPage: NextPage<Props> = (props: Props): ReactElement => {
                 placeholder="Email address"
                 autoComplete="off"
                 value={email}
-                // onChange={(evt) => _.changeInputHandler(evt)}
+                onChange={handleEmailChange}
                 disabled={isChecking}
               />
             </div>
@@ -62,7 +79,7 @@ const AuthPage: NextPage<Props> = (props: Props): ReactElement => {
                 placeholder="Password"
                 autoComplete="off"
                 value={password}
-                // onChange={(evt) => _.changeInputHandler(evt)}
+                onChange={handlePasswordChange}
                 disabled={isChecking}
               />
             </div>
@@ -71,7 +88,7 @@ const AuthPage: NextPage<Props> = (props: Props): ReactElement => {
               <InputSubmit
                 type="submit"
                 value="SignIn"
-                // onClick={(evt) => _.clickInputSubmitHandler(evt)}
+                onClick={handleSubmitClick}
                 disabled={isChecking}
               />
             </div>

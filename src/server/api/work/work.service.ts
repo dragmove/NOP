@@ -19,7 +19,7 @@ const WORKS = {
 
 @Injectable()
 export class WorkService {
-  public all() {
+  public getAll() {
     return WORKS;
   }
 }
