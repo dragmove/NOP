@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Work, WorkCategory } from './work.model';
+import { v1 as uuid } from 'uuid';
+import { CreateWorkDto } from './dto/create-work.dto';
+import { UpdateWorkDto } from './dto/update-work.dto';
 
 const WORKS = {
   'no-1': {
@@ -19,7 +23,85 @@ const WORKS = {
 
 @Injectable()
 export class WorkService {
-  public getAll() {
-    return WORKS;
+  private works: Work[] = [
+    {
+      id: '1',
+      title: 'LGE Mobile GUI',
+      titleKor: '엘지전자 모바일 GUI',
+      subtitle: '',
+      description: '',
+      url: '',
+      heroImages: [],
+      thumbnails: [],
+      prizes: [],
+      ranks: [],
+      workSummary: 'Flash develop',
+      workDetail: '',
+      period: '2006.03 - 2006.04',
+      releaseDate: '',
+      copyright: 'Saltcake',
+      client: 'LGE',
+      category: WorkCategory.PROJECT,
+    },
+    {
+      id: '2',
+      title: 'Ritzcarlton seoul website',
+      titleKor: '리츠칼튼 서울 웹사이트',
+      subtitle: '',
+      description: '',
+      url: '',
+      heroImages: [],
+      thumbnails: [],
+      prizes: [],
+      ranks: [],
+      workSummary: 'Flash develop',
+      workDetail: '',
+      period: '2006.04 - 2006.05',
+      releaseDate: '',
+      copyright: 'Saltcake',
+      client: 'Ritzcarlton seoul',
+      category: WorkCategory.PROJECT,
+    },
+  ];
+
+  public getAll(): Work[] {
+    return this.works;
+  }
+
+  public get(id: number | string): Work | never {
+    const work: Work = this.works.find((work) => work.id === id);
+    if (!work) {
+      throw new NotFoundException(`Can't find data with id: ${id}`);
+    }
+
+    return work;
+  }
+
+  public create(createWorkDto: CreateWorkDto): Work {
+    const work: Work = {
+      ...createWorkDto,
+      id: uuid(),
+    };
+
+    this.works.push(work);
+    return work;
+  }
+
+  public update(
+    id: number | string,
+    updateWorkDto: UpdateWorkDto,
+  ): Work | never {
+    const work: Work = this.get(id);
+
+    // FIXME: work 업데이트
+    return work;
+  }
+
+  public delete(id: number | string): void {
+    // TODO: NotFoundException
+    const work: Work = this.get(id);
+
+    const works: Work[] = this.works.filter((w) => w.id !== work.id);
+    this.works = works;
   }
 }

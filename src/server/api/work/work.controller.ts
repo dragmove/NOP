@@ -1,14 +1,50 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { CreateWorkDto } from './dto/create-work.dto';
+import { UpdateWorkDto } from './dto/update-work.dto';
+import { Work } from './work.model';
 import { WorkService } from './work.service';
 
 @Controller('api/work')
 export class WorkController {
-  constructor(private service: WorkService) {}
+  constructor(private svc: WorkService) {}
 
-  @Get()
-  findAll() {
-    return this.service.getAll();
+  @Get('/')
+  async getAll(): Promise<Work[]> {
+    return await this.svc.getAll();
+  }
+
+  @Get('/:id')
+  async get(@Param('id') id: number | string): Promise<Work> {
+    return await this.svc.get(id);
+  }
+
+  @Post('/')
+  @UsePipes(ValidationPipe)
+  async create(@Body() createWorkDto: CreateWorkDto): Promise<Work> {
+    return await this.svc.create(createWorkDto);
+  }
+
+  @Patch('/:id')
+  @UsePipes(ValidationPipe)
+  async update(
+    @Param('id') id: number | string,
+    @Body() updateWorkDto: UpdateWorkDto,
+  ): Promise<Work> {
+    return await this.svc.update(id, updateWorkDto);
+  }
+
+  @Delete('/:id')
+  async delete(@Param('id') id: number | string): Promise<void> {
+    return await this.svc.delete(id);
   }
 }
-
-// FIXME: 인프런 강의 CRUD 구현 참고하여, DTO 생성 진행
