@@ -1,3 +1,5 @@
+import { WorkCategory } from '../enums/work';
+
 export interface Work {
   id?: number | string;
   title: string;
@@ -16,8 +18,4 @@ export interface Work {
   copyright?: string;
   client?: string;
   category: WorkCategory;
-}
-
-export enum WorkCategory {
-  PROJECT = 'project',
 }

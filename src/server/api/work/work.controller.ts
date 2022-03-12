@@ -4,47 +4,53 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { PluralResult, ApiResponse } from '../../../shared/types/data';
 import { CreateWorkDto } from './dto/create-work.dto';
 import { UpdateWorkDto } from './dto/update-work.dto';
-import { Work } from './work.model';
+import { Work } from './work.entity';
 import { WorkService } from './work.service';
 
 @Controller('api/work')
 export class WorkController {
-  constructor(private svc: WorkService) {}
+  constructor(private service: WorkService) {}
 
   @Get('/')
-  async getAll(): Promise<Work[]> {
-    return await this.svc.getAll();
+  async getAll(): Promise<ApiResponse<PluralResult<Work>>> {
+    return await this.service.getAll();
   }
 
   @Get('/:id')
-  async get(@Param('id') id: number | string): Promise<Work> {
-    return await this.svc.get(id);
+  async get(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<Work>> {
+    return await this.service.get(id);
   }
 
   @Post('/')
   @UsePipes(ValidationPipe)
-  async create(@Body() createWorkDto: CreateWorkDto): Promise<Work> {
-    return await this.svc.create(createWorkDto);
+  async create(
+    @Body() createWorkDto: CreateWorkDto,
+  ): Promise<ApiResponse<void>> {
+    return await this.service.create(createWorkDto);
   }
 
   @Patch('/:id')
   @UsePipes(ValidationPipe)
   async update(
-    @Param('id') id: number | string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateWorkDto: UpdateWorkDto,
-  ): Promise<Work> {
-    return await this.svc.update(id, updateWorkDto);
+  ): Promise<ApiResponse<void>> {
+    return await this.service.update(id, updateWorkDto);
   }
 
   @Delete('/:id')
-  async delete(@Param('id') id: number | string): Promise<void> {
-    return await this.svc.delete(id);
+  async delete(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ApiResponse<void>> {
+    return await this.service.delete(id);
   }
 }
