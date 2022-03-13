@@ -1,30 +1,33 @@
-import { BREAK_POINTS } from "@client/constants/config";
-import { NextPage } from "next";
+import { BREAK_POINTS } from '@client/constants/config';
+import { NextPage } from 'next';
 import React, {
   ReactElement,
   SyntheticEvent,
   useEffect,
   useState,
-} from "react";
-import styled from "styled-components";
+} from 'react';
+import styled from 'styled-components';
+import { InputEvent } from '@shared/types/event';
 
 interface Props {}
 
 const AuthPage: NextPage<Props> = (props: Props): ReactElement => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [isChecking, setIsChecking] = useState<boolean>(false);
 
   useEffect(() => {
     //
   }, []);
 
-  const handleEmailChange = (evt: SyntheticEvent) => {
-    //
+  const handleEmailChange = (evt: InputEvent) => {
+    const { value } = evt.target;
+    setEmail(value);
   };
 
-  const handlePasswordChange = (evt: SyntheticEvent) => {
-    //
+  const handlePasswordChange = (evt: InputEvent) => {
+    const { value } = evt.target;
+    setPassword(value);
   };
 
   const handleSubmitClick = (evt: SyntheticEvent) => {
@@ -140,7 +143,7 @@ const ArticleTitle = styled.h3`
   margin: 150px auto 0;
   font-size: 15px;
   font-weight: 600;
-  font-family: "Montserrat", "Rubik", "Carme", "Lato", Roboto, Ubuntu, san-serif;
+  font-family: 'Montserrat', 'Rubik', 'Carme', 'Lato', Roboto, Ubuntu, san-serif;
   letter-spacing: 0.05em;
   color: #fff;
   text-align: center;
@@ -155,7 +158,7 @@ const ArticleTitle = styled.h3`
 const FormLogin = styled.form`
   position: realtive;
   margin: 40px auto 0;
-  font-family: "Montserrat", "Rubik", "Carme", "Lato", Roboto, Ubuntu, san-serif;
+  font-family: 'Montserrat', 'Rubik', 'Carme', 'Lato', Roboto, Ubuntu, san-serif;
   font-size: 12px;
   font-weight: 400;
   width: 314px;
@@ -215,7 +218,7 @@ const InputEmail = styled.input`
   padding: 4px 12px;
   background-color: #fff;
   border: 1px solid #d9dadc;
-  font-family: "Montserrat", "Rubik", "Carme", "Lato", Roboto, Ubuntu, san-serif;
+  font-family: 'Montserrat', 'Rubik', 'Carme', 'Lato', Roboto, Ubuntu, san-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -232,7 +235,7 @@ const InputPassword = styled.input`
   padding: 4px 12px;
   background-color: #fff;
   border: 1px solid #d9dadc;
-  font-family: "Montserrat", "Rubik", "Carme", "Lato", Roboto, Ubuntu, san-serif;
+  font-family: 'Montserrat', 'Rubik', 'Carme', 'Lato', Roboto, Ubuntu, san-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -246,7 +249,7 @@ const InputSubmit = styled.input`
   padding: 6px 24px 6px;
   background-color: #c23420;
   font-weight: 600;
-  font-family: "Carme", Roboto, Ubuntu, san-serif;
+  font-family: 'Carme', Roboto, Ubuntu, san-serif;
   font-size: 11px;
   color: #fff;
   cursor: pointer;
@@ -280,7 +283,7 @@ const LinkBtn = styled.a.attrs((props) => ({
   padding: 6px 24px 6px;
   background-color: #c23420;
   font-weight: 600;
-  font-family: "Carme", Roboto, Ubuntu, san-serif;
+  font-family: 'Carme', Roboto, Ubuntu, san-serif;
   font-size: 11px;
   color: #fff;
   text-align: center;

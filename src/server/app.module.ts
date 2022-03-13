@@ -5,7 +5,7 @@ import { RenderModule } from 'nest-next';
 import Next from 'next';
 import { join } from 'path';
 import { ApiModule } from './api/api.module';
-import { typeOrmConfig } from './configs/typeorm.config';
+import { typeOrmConfig } from './config/typeorm.config';
 import { ViewModule } from './view/view.module';
 
 @Module({

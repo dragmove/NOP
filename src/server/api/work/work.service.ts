@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ApiResponse, PluralResult } from '../../../shared/types/data';
 import { CreateWorkDto } from './dto/create-work.dto';
 import { UpdateWorkDto } from './dto/update-work.dto';
-import { Work } from './work.entity';
+import { Work } from '../../entity/work.entity';
 import { WorkRepository } from './work.repository';
 
 @Injectable()
@@ -60,45 +60,4 @@ export class WorkService {
       message: 'ok',
     };
   }
-
-  // private works: Work[] = [
-  //   {
-  //     id: '1',
-  //     title: 'LGE Mobile GUI',
-  //     titleKor: '엘지전자 모바일 GUI',
-  //     subtitle: '',
-  //     description: '',
-  //     url: '',
-  //     heroImages: [],
-  //     thumbnails: [],
-  //     prizes: [],
-  //     ranks: [],
-  //     workSummary: 'Flash develop',
-  //     workDetail: '',
-  //     period: '2006.03 - 2006.04',
-  //     releaseDate: '',
-  //     copyright: 'Saltcake',
-  //     client: 'LGE',
-  //     category: WorkCategory.PROJECT,
-  //   },
-  //   {
-  //     id: '2',
-  //     title: 'Ritzcarlton seoul website',
-  //     titleKor: '리츠칼튼 서울 웹사이트',
-  //     subtitle: '',
-  //     description: '',
-  //     url: '',
-  //     heroImages: [],
-  //     thumbnails: [],
-  //     prizes: [],
-  //     ranks: [],
-  //     workSummary: 'Flash develop',
-  //     workDetail: '',
-  //     period: '2006.04 - 2006.05',
-  //     releaseDate: '',
-  //     copyright: 'Saltcake',
-  //     client: 'Ritzcarlton seoul',
-  //     category: WorkCategory.PROJECT,
-  //   },
-  // ];
 }

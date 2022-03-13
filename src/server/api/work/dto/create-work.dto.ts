@@ -10,17 +10,17 @@ export class CreateWorkDto {
   // @IsNotEmpty()
   // titleKor: string;
 
-  // @IsString()
-  // @IsOptional()
-  // subtitle: string;
+  @IsString()
+  @IsOptional()
+  subtitle: string;
 
-  // @IsString()
-  // @IsOptional()
-  // description: string;
+  @IsString()
+  @IsOptional()
+  description: string;
 
-  // @IsString()
-  // @IsOptional()
-  // url: string;
+  @IsString()
+  @IsOptional()
+  url: string;
 
   // @IsArray()
   // @IsOptional()
@@ -30,9 +30,9 @@ export class CreateWorkDto {
   // @IsOptional()
   // thumbnails: string[];
 
-  // @IsArray()
-  // @IsOptional()
-  // prizes: string[];
+  @IsArray()
+  @IsOptional()
+  prizes: string[];
 
   // @IsArray()
   // @IsOptional()

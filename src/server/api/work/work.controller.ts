@@ -13,7 +13,7 @@ import {
 import { PluralResult, ApiResponse } from '../../../shared/types/data';
 import { CreateWorkDto } from './dto/create-work.dto';
 import { UpdateWorkDto } from './dto/update-work.dto';
-import { Work } from './work.entity';
+import { Work } from '../../entity/work.entity';
 import { WorkService } from './work.service';
 
 @Controller('api/work')

@@ -1,7 +1,7 @@
-import { BREAK_POINTS } from "@client/constants/config";
-import { truthy } from "@shared/utils/common";
-import React, { SyntheticEvent } from "react";
-import styled from "styled-components";
+import { BREAK_POINTS } from '@client/constants/config';
+import { truthy } from '@shared/utils/common';
+import React, { SyntheticEvent } from 'react';
+import styled from 'styled-components';
 
 export interface GoTopBtnProps {
   isVisible: boolean;
@@ -18,7 +18,7 @@ export const GoTopBtn = ({ isVisible = false, onClick }) => {
 
 const Wrap = styled.div.attrs<GoTopBtnProps>(({ isVisible }) => ({
   style: {
-    display: truthy(isVisible) ? "block" : "none",
+    display: truthy(isVisible) ? 'block' : 'none',
   },
 }))`
   position: absolute;
@@ -34,7 +34,7 @@ const Btn = styled.button`
   border: none;
   background-color: transparent;
   font-size: 11px;
-  font-family: "Carme", "Lato", Roboto, Ubuntu, san-serif;
+  font-family: 'Carme', 'Lato', Roboto, Ubuntu, san-serif;
   color: #fff;
   letter-spacing: 0.05em;
   opacity: 0.75;

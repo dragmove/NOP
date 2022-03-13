@@ -1,22 +1,22 @@
-import { GoTopBtn } from "@client/components/atoms/button/GoTopBtn";
-import { Copyright } from "@client/components/atoms/copyright/Copyright";
-import { Dot } from "@client/components/atoms/shape/Dot";
-import Logo from "@client/components/molcules/logo/Logo";
-import Navi from "@client/components/molcules/navigation/Navi";
-import { Route, ROUTES } from "@client/constants/routes";
-import { useWindowSize, WindowSize } from "@client/utils/hooks/useWindowSize";
-import { APP_NAME } from "@shared/constants/common";
+import { GoTopBtn } from '@client/components/atoms/button/GoTopBtn';
+import { Copyright } from '@client/components/atoms/copyright/Copyright';
+import { Dot } from '@client/components/atoms/shape/Dot';
+import Logo from '@client/components/molcules/logo/Logo';
+import Navi from '@client/components/molcules/navigation/Navi';
+import { Route, ROUTES } from '@client/constants/routes';
+import { useWindowSize, WindowSize } from '@client/utils/hooks/useWindowSize';
+import { APP_NAME } from '@shared/constants/common';
 import {
   resizeBrowser,
   updateBrowserScrollTop,
-} from "@shared/store/slices/browser";
-import { updateGoTopBtnVisible } from "@shared/store/slices/goTopBtn";
-import { NaviState, updateNavi } from "@shared/store/slices/navi";
-import { RootState } from "@shared/store/store";
-import head from "lodash.head";
-import Head from "next/head";
-import { ReactElement, SyntheticEvent, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+} from '@shared/store/slices/browser';
+import { updateGoTopBtnVisible } from '@shared/store/slices/goTopBtn';
+import { NaviState, updateNavi } from '@shared/store/slices/navi';
+import { RootState } from '@shared/store/store';
+import head from 'lodash.head';
+import Head from 'next/head';
+import { ReactElement, SyntheticEvent, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -24,8 +24,8 @@ import {
   map,
   partition,
   tap,
-} from "rxjs";
-import styled from "styled-components";
+} from 'rxjs';
+import styled from 'styled-components';
 
 const DEBOUNCE_DELAY_SCROLL_TOP = 50;
 
@@ -55,39 +55,39 @@ const Layout = ({ children }): ReactElement => {
       resizeBrowser({
         width: window.innerWidth,
         height: window.innerHeight,
-      })
+      }),
     );
 
     const naviDepth: NaviState = getNaviDepth(location.pathname);
     dispatch(updateNavi(naviDepth));
 
-    const scrollTop$ = fromEvent(appNodeRef.current, "scroll").pipe(
+    const scrollTop$ = fromEvent(appNodeRef.current, 'scroll').pipe(
       map((evt) => (evt.target as HTMLElement).scrollTop),
-      distinctUntilChanged()
+      distinctUntilChanged(),
     );
     const subscribeScrollTop$ = scrollTop$
       .pipe(
         debounceTime(DEBOUNCE_DELAY_SCROLL_TOP),
-        tap((scrollTop) => dispatch(updateBrowserScrollTop(scrollTop)))
+        tap((scrollTop) => dispatch(updateBrowserScrollTop(scrollTop))),
       )
       .subscribe();
 
     const [_subscribeHideGoTopBtn$, _subscribeShowGoTopBtn$] = partition(
       scrollTop$,
-      (scrollTop: number) => scrollTop === 0
+      (scrollTop: number) => scrollTop === 0,
     );
 
     const subscribeHideGoTopBtn$ = _subscribeHideGoTopBtn$
       .pipe(
         debounceTime(DEBOUNCE_DELAY_SCROLL_TOP),
-        tap(() => dispatch(updateGoTopBtnVisible(false)))
+        tap(() => dispatch(updateGoTopBtnVisible(false))),
       )
       .subscribe();
 
     const subscribeShowGoTopBtn$ = _subscribeShowGoTopBtn$
       .pipe(
         debounceTime(DEBOUNCE_DELAY_SCROLL_TOP),
-        tap(() => dispatch(updateGoTopBtnVisible(true)))
+        tap(() => dispatch(updateGoTopBtnVisible(true))),
       )
       .subscribe();
 
@@ -103,7 +103,7 @@ const Layout = ({ children }): ReactElement => {
       top,
       left: 0,
       ...(isSmooth && {
-        behavior: "smooth",
+        behavior: 'smooth',
       }),
     });
   }
@@ -114,22 +114,6 @@ const Layout = ({ children }): ReactElement => {
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{APP_NAME}</title>
-        {/* FIXME: Check favicon */}
-        <link
-          rel="shortcut icon"
-          type="image/x-icon"
-          href="/assets/favicon/favicon.ico"
-        />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://fonts.googleapis.com/css?family=Lato:300,400|Carme|Roboto|Rubik:300,400|Gothic+A1|Montserrat:400,500,600,700,800"
-        />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://fonts.googleapis.com/earlyaccess/nanumgothic.css"
-        />
       </Head>
 
       <Wrap
@@ -141,28 +125,28 @@ const Layout = ({ children }): ReactElement => {
           radius={2}
           left="18px"
           top="18px"
-          backgroundColor={"#fff"}
+          backgroundColor={'#fff'}
           opacity={0.25}
         />
         <Dot
           radius={2}
           right="18px"
           top="18px"
-          backgroundColor={"#fff"}
+          backgroundColor={'#fff'}
           opacity={0.25}
         />
         <Dot
           radius={2}
           right="18px"
           bottom="18px"
-          backgroundColor={"#fff"}
+          backgroundColor={'#fff'}
           opacity={0.25}
         />
         <Dot
           radius={2}
           left="18px"
           bottom="18px"
-          backgroundColor={"#fff"}
+          backgroundColor={'#fff'}
           opacity={0.25}
         />
 
