@@ -1,10 +1,10 @@
 {
-  "name": "tmpl-nest-next",
+  "name": "nop",
   "version": "0.0.1",
   "main": "",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/server/main.ts",
+    "dev": "cross-env PHASE=local nodemon src/server/main.ts",
     "build:clean": "rimraf .next",
     "build:client": "npx next build",
     "build:server": "npx tsc --project tsconfig.server.json && npx babel .next/production-server -d .next/production-server --extensions \".js\"",
@@ -70,6 +70,7 @@
     "eslint-plugin-react": "^7.29.3",
     "eslint-plugin-react-hooks": "^4.3.0",
     "jest": "^27.5.1",
+    "msw": "^0.39.2",
     "nodemon": "^2.0.15",
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",
@@ -78,5 +79,8 @@
     "ts-node": "^10.7.0",
     "tsconfig-paths": "^3.13.0",
     "typescript": "^4.6.2"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

@@ -1,7 +1,7 @@
-import { redeem } from "@shared/utils/common";
-import PropTypes from "prop-types";
-import { FC, ReactElement } from "react";
-import styled from "styled-components";
+import { redeem } from '@shared/utils/common';
+import PropTypes from 'prop-types';
+import React, { FC, ReactElement } from 'react';
+import styled from 'styled-components';
 
 interface PropTypes {
   width?: number;
@@ -17,14 +17,14 @@ interface PropTypes {
 }
 
 const ContactCircleIconLinkButton: FC<PropTypes> = (
-  props: PropTypes
+  props: PropTypes,
 ): ReactElement => {
   const {
     width = 16,
     height = 16,
     href,
-    target = "_blank",
-    iconSrc = "",
+    target = '_blank',
+    iconSrc = '',
     iconWidth = 16,
     iconHeight = 16,
     iconX = 0,
@@ -34,7 +34,7 @@ const ContactCircleIconLinkButton: FC<PropTypes> = (
 
   return (
     <Link
-      href={redeem(href, "#")}
+      href={redeem(href, '#')}
       target={target}
       width={width}
       height={height}
@@ -55,7 +55,7 @@ const ContactCircleIconLinkButton: FC<PropTypes> = (
 export default ContactCircleIconLinkButton;
 
 function getRel(target: string): string {
-  return target === "_blank" ? `rel="noopener noreferrer"` : "";
+  return target === '_blank' ? `rel="noopener noreferrer"` : '';
 }
 
 const Link = styled.a.attrs((props) => ({

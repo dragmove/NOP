@@ -1,13 +1,13 @@
-import AnimatedRectLoading from "@client/components/atoms/animatedRectLoading/AnimatedRectLoading";
-import { BREAK_POINTS } from "@client/constants/config";
-import { useAwards, useCareers, useProfile } from "@client/utils/hooks/data";
-import { truthy } from "@shared/utils/common";
-import { NextPage } from "next";
-import React, { ReactElement } from "react";
-import styled from "styled-components";
-import AwardList from "./templates/award/AwardList";
-import CareerList from "./templates/career/CareerList";
-import Contact from "./templates/contact/Contact";
+import AnimatedRectLoading from '@client/components/atoms/animatedRectLoading/AnimatedRectLoading';
+import { BREAK_POINTS } from '@client/constants/config';
+import { useAwards, useCareers, useProfile } from '@client/utils/hooks/data';
+import { truthy } from '@shared/utils/common';
+import { NextPage } from 'next';
+import React, { ReactElement } from 'react';
+import styled from 'styled-components';
+import AwardList from './templates/award/AwardList';
+import CareerList from './templates/career/CareerList';
+import Contact from './templates/contact/Contact';
 
 interface Props {}
 
@@ -33,7 +33,7 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
   // TODO: 중복 코드 줄이기
   const careersContents = careersError ? (
     <Notification>
-      <Desc>{"Failed to load career data."}</Desc>
+      <Desc>{'Failed to load career data.'}</Desc>
     </Notification>
   ) : (
     <CareerList data={careers} />
@@ -41,7 +41,7 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
 
   const awardsContents = awardsError ? (
     <Notification>
-      <Desc>{"Failed to load award data."}</Desc>
+      <Desc>{'Failed to load award data.'}</Desc>
     </Notification>
   ) : (
     <AwardList data={awards} />
@@ -49,7 +49,7 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
 
   const profileContents = profileError ? (
     <Notification>
-      <Desc>{"Failed to load profile data."}</Desc>
+      <Desc>{'Failed to load profile data.'}</Desc>
     </Notification>
   ) : (
     <Contact data={profile} />
@@ -73,7 +73,7 @@ const ProfilePage: NextPage<Props> = (props: Props): ReactElement => {
 
       <article>
         <ArticleTitle>CONTACT.</ArticleTitle>
-        {truthy(isProfileLoading) ? AnimatedRectLoadingWrap : ""}
+        {truthy(isProfileLoading) ? AnimatedRectLoadingWrap : ''}
         {profileContents}
       </article>
     </Section>
@@ -100,7 +100,7 @@ const ArticleTitle = styled.h3`
   margin: 150px auto 0;
   font-size: 15px;
   font-weight: 600;
-  font-family: "Montserrat", "Rubik", "Carme", "Lato", Roboto, Ubuntu, san-serif;
+  font-family: 'Montserrat', 'Rubik', 'Carme', 'Lato', Roboto, Ubuntu, san-serif;
   letter-spacing: 0.05em;
   color: #fff;
   text-align: center;
@@ -131,7 +131,7 @@ const Desc = styled.p`
   width: 100%;
   font-size: 13px;
   font-weight: 400;
-  font-family: "Montserrat", "Rubik", "Carme", "Lato", Roboto, Ubuntu, san-serif;
+  font-family: 'Montserrat', 'Rubik', 'Carme', 'Lato', Roboto, Ubuntu, san-serif;
   letter-spacing: 0.05em;
   line-height: 20px;
   color: #fff;

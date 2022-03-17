@@ -70,6 +70,7 @@ const AuthPage: NextPage<Props> = (props: Props): ReactElement => {
                 value={email}
                 onChange={handleEmailChange}
                 disabled={isChecking}
+                data-testid="email"
               />
             </div>
 
@@ -84,6 +85,7 @@ const AuthPage: NextPage<Props> = (props: Props): ReactElement => {
                 value={password}
                 onChange={handlePasswordChange}
                 disabled={isChecking}
+                data-testid="password"
               />
             </div>
 
