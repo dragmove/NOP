@@ -1,6 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ApiResponse, PluralResult } from '../../../shared/types/data';
+import bcrypt from 'bcryptjs';
+import { AuthTokens } from '../../../shared/types/auth';
+import { ApiResponse } from '../../../shared/types/data';
 import { User } from '../../entity/user.entity';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { UserRepository } from './user.repository';
@@ -9,42 +12,99 @@ import { UserRepository } from './user.repository';
 export class AuthService {
   constructor(
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private repository: UserRepository,
+    private jwtService: JwtService,
   ) {}
 
-  async signUp(
-    authCredentialDto: AuthCredentialDto,
-  ): Promise<ApiResponse<void>> {
-    // create user
-    await this.userRepository.createUser(authCredentialDto);
+  async signUpLocal(dto: AuthCredentialDto): Promise<ApiResponse<void>> {
+    await this.repository.createUser(dto);
     return {
       statusCode: 0,
       message: 'ok',
     };
   }
 
-  /*
-  async getAll(): Promise<ApiResponse<PluralResult<User>>> {
-    const result = await this.userRepository.getAll();
+  async signInLocal(dto: AuthCredentialDto): Promise<ApiResponse<AuthTokens>> {
+    const { email, password } = dto;
+    const user: User = await this.repository.getUserByEmail(email);
+
+    const isMatchPassword: boolean = await bcrypt.compare(
+      password,
+      user.password,
+    );
+    if (!isMatchPassword) {
+      throw new UnauthorizedException('Login failed.');
+    }
+
+    const tokens: AuthTokens = await this.getTokens({
+      id: user.id,
+      name: user.name,
+      nickname: user.nickname,
+      email: user.email,
+    });
+    await this.repository.updateRefreshToken(user.id, tokens.refreshToken);
+
     return {
       statusCode: 0,
+      result: { ...tokens },
       message: 'ok',
-      result: {
-        data: result,
-        total: result.length,
-      },
     };
   }
 
-  async get(id: number): Promise<ApiResponse<User>> {
-    const result = await this.userRepository.getUser(id);
+  async logout(userId: number): Promise<ApiResponse<void>> {
+    const user: User = await this.repository.getUserById(userId);
+    await this.repository.updateRefreshToken(user.id, null);
+
     return {
       statusCode: 0,
       message: 'ok',
-      result,
     };
   }
 
-  // TODO: update, delete
-  */
+  async refreshTokens(
+    userId: number,
+    refreshToken: string,
+  ): Promise<ApiResponse<AuthTokens>> {
+    const user: User = await this.repository.getUserById(userId);
+
+    const isMatchRefreshToken: boolean = await bcrypt.compare(
+      refreshToken,
+      user.refreshToken,
+    );
+    if (!isMatchRefreshToken) {
+      throw new UnauthorizedException('Refresh tokens failed.');
+    }
+
+    const tokens: AuthTokens = await this.getTokens({
+      id: user.id,
+      name: user.name,
+      nickname: user.nickname,
+      email: user.email,
+    });
+    await this.repository.updateRefreshToken(userId, tokens.refreshToken);
+
+    return {
+      statusCode: 0,
+      result: { ...tokens },
+      message: 'ok',
+    };
+  }
+
+  async getTokens(payload: Partial<User>): Promise<AuthTokens> {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload, {
+        secret: 'at-secret', // FIXME:
+        expiresIn: 60 * 15, // 15m
+      }),
+      this.jwtService.signAsync(payload, {
+        secret: 'rt-secret', // FIXME:
+        expiresIn: 60 * 60 * 24, // 1d
+      }),
+    ]);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
 }

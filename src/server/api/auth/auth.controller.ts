@@ -1,14 +1,18 @@
+// Ref: https://www.youtube.com/watch?v=uAKzFhE3rxU
+
 import {
   Body,
   Controller,
-  Get,
-  Param,
-  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
   Post,
-  UsePipes,
-  ValidationPipe,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiResponse, PluralResult } from '../../../shared/types/data';
+import { Request } from 'express';
+import { AuthTokens } from '../../../shared/types/auth';
+import { ApiResponse } from '../../../shared/types/data';
+import { AccessTokenGuard, RefreshTokenGuard } from '../../common/guards';
 import { User } from '../../entity/user.entity';
 import { AuthService } from './auth.service';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
@@ -17,34 +21,34 @@ import { AuthCredentialDto } from './dto/auth-credential.dto';
 export class AuthController {
   constructor(private service: AuthService) {}
 
-  @Post('/signup')
-  @UsePipes(ValidationPipe)
-  async signUp(
-    @Body() authCredentialDto: AuthCredentialDto,
-  ): Promise<ApiResponse<void>> {
-    return await this.service.signUp(authCredentialDto);
+  @Post('/local/signup')
+  @HttpCode(HttpStatus.CREATED)
+  signUpLocal(@Body() dto: AuthCredentialDto): Promise<ApiResponse<void>> {
+    return this.service.signUpLocal(dto);
   }
 
-  /*
-  @Get('/')
-  async getAll(): Promise<ApiResponse<PluralResult<User>>> {
-    return await this.service.getAll();
+  @Post('/local/signin')
+  @HttpCode(HttpStatus.OK)
+  signInLocal(
+    @Body() dto: AuthCredentialDto,
+  ): Promise<ApiResponse<AuthTokens>> {
+    return this.service.signInLocal(dto);
   }
 
-  @Get('/:id')
-  async get(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<User>> {
-    return await this.service.get(id);
+  @UseGuards(AccessTokenGuard)
+  @Post('/logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@Req() req: Request): Promise<ApiResponse<void>> {
+    const user: Partial<User> = req.user;
+    return this.service.logout(user.id);
   }
 
-  @Post('/')
-  @UsePipes(ValidationPipe)
-  async create(
-    @Body() createWorkDto: CreateWorkDto,
-  ): Promise<ApiResponse<void>> {
-    return await this.service.create(createWorkDto);
+  @UseGuards(RefreshTokenGuard)
+  @Post('/refresh-tokens')
+  @HttpCode(HttpStatus.OK)
+  refreshTokens(@Req() req: Request): Promise<ApiResponse<AuthTokens>> {
+    // TODO: 테스트시 Bearer {refreshToken} 전달 필요
+    const user: Partial<User> = req.user;
+    return this.service.refreshTokens(user.id, user.refreshToken);
   }
-
-  /*
-  // TODO: update, delete
-  */
 }

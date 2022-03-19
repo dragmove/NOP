@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
+@Unique(['nickname', 'email'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,6 +24,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({ nullable: true })
+  refreshToken: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -30,3 +30,5 @@ describe('ProfilePage', () => {
 
   // TODO: write mock api test with msw
 });
+
+// FIXME: Auth 관련 API 먼저 만들고, 이후에 테스트 작성 시도해보자.
